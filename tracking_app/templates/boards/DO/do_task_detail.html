@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<h1>{{ object.title }}</h1>
+<p>{{ object.description }}</p>
+<p>{{ object.status }}</p>
+<p>{{ object.priority }}</p>
+<p>{{ object.date }}</p>
+<p>{{ object.creator }}</p>
+
+
+
+
+<hr>
+
+<h2>Коментарі</h2>
+
+{% for comment in comments %}
+    <p>{{ comment.author }}</p>
+    <p>{{ comment.content }}</p>
+    <p>{{ comment.created_at }}</p>
+
+    <a href="{% url 'comm-update' comment.pk %}" class="btn btn-warning">Редагувати</a>
+    <a href="{% url 'comm-delete' comment.pk %}" class="btn btn-danger">Видалити</a>
+{% endfor %}
+
+
+<h4>Додати новий коментарій</h4>
+<form method="post">
+    {% csrf_token %}
+    {{ form.content }}
+    <button type="submit" class="btn btn-primary">Додати</button>
+</form>
+
+
+<hr>
+
+<a href="{% url 'task-update' object.pk %}" class="btn btn-primary">Редагувати</a>
+<a href="{% url 'task-delete' object.pk %}" class="btn btn-danger">Видалити</a>
+<a href="{% url 'do-task-list' %}" class="btn btn-secondary">До списку</a>
+
+{% endblock %}

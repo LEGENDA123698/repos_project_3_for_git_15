@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <h2>Оновлення Завдання</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-outline-info">Оновити</button>
+        <a href="{% url 'do-task-list' %}" class="btn btn-danger">Видалити</a>
+    </form>
+</div>
+
+{% endblock %}

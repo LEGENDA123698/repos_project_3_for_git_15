@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<h1>Do Task List</h1>
+
+<br>
+
+<form method="get" class="form-inline mb-3">
+    {{ form.status.label_tag }}
+    {{ form.status }}
+    {{ form.priority.label_tag }}
+    {{ form.priority }}
+    <button type="submit" class="btn btn-primary">Фільтрувати</button>
+</form>
+
+
+
+<ul class="list-group">
+    {% for task in object_list %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <a href="{% url 'do-task-detail' task.pk %}">{{ task.title }}</a>
+
+                {% if task.status == 'todo' %}
+                    <span class="badge text-bg-primary">Need to do</span>
+
+                {% elif task.status == 'in_progress' %}
+                    <span class="badge text-bg-secondary">In Development</span>
+
+                {% elif task.status == 'completed' %}
+                    <span class="badge text-bg-success">Completed</span>
+                
+                {% endif %}
+
+                {% if task.priority == 'low' %}
+                    <span class="badge text-bg-info">low</span>
+
+                {% elif task.priority == 'medium' %}
+                    <span class="badge text-bg-warning">Medium</span>
+
+                {% elif task.priority == 'high' %}
+                    <span class="badge text-bg-danger">High</span>
+
+                {% endif %}
+            </div>
+
+            <form action="{% url 'change-status' task.pk %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary btn-sm">змінити статус</button>
+            </form>
+
+            <div style="margin-left: -1400px;">
+                <form action="{% url 'change-priority' task.pk %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary btn-sm">змінити пріорітет</button>
+                </form>
+            </div>
+        </li>
+
+    {% endfor %}
+</ul>
+<a href="{% url 'note-add-create' %}">Add Note</a>
+<a href="{% url 'main-page' %}" class="btn btn-primary">На головну сторінку</a>
+
+{% endblock %}
